@@ -1,2 +1,35 @@
 ---
 # tasks file for 5.wordpress
+
+    - name: get wordpress files
+      unarchive:
+        src: https://{{ app_name }}.org/latest.tar.gz
+        dest: "{{ site_path }}"
+        owner: www-data
+        group: www-data
+        mode: 0755
+        remote_src: yes  #cause i downloading a file from remote machine
+
+    - name: set permissions for files
+      command: >
+        sudo find /var/www/html/{{ app_name }} -type f -exec chmod 644 {} \;
+
+    - name: rename wp-config.php
+      command: mv /var/www/html/{{ app_name }}/wp-config-sample.php /var/www/html/{{ app_name }}/wp-config-.php
+
+    - name: Set up wp-config
+      template:
+        src: "wp-config.php.j2"
+        dest: "/var/www/html/{{ app_name }}/wp-config.php"
+
+    - name: nginx configuration
+      template:
+        src: "nginx.conf.j2"
+        dest: "/etc/nginx/sites-available/{{ app_name }}"
+
+    - name: link app to sites-enabled
+      file:
+        src: /etc/nginx/sites-available/{{ app_name }}
+        dest: /etc/nginx/sites-enabled/{{ app_name }}
+        state: link
+      notify: Restart nginx

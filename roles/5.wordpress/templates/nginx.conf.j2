@@ -1,0 +1,29 @@
+server {
+    server_name {{ domain_name }};
+    root /var/www/html/{{ app_name }};
+    index index.php index.html index.nginx-debian.html ;
+
+    access_log /var/log/nginx/{{ domain_name }}_access.log;
+    error_log  /var/log/nginx/{{ domain_name }}_error.log;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass 127.0.0.1:9001;
+    }
+    location /status {
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+    } 
+    location /nginx_status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+    }}

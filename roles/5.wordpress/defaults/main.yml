@@ -1,2 +1,10 @@
 ---
 # defaults file for 5.wordpress
+app_name: wordpress
+site_path: /var/www/http_host
+domain_name: essam.spiru.la
+
+db_name: wordpress
+db_user: wordpressuser
+db_password: wordpresspass
+db_host: localhost

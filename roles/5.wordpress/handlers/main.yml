@@ -1,2 +1,7 @@
 ---
 # handlers file for 5.wordpress
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
