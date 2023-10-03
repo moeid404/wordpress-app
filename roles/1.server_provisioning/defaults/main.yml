@@ -1,2 +1,5 @@
 ---
-# defaults file for 1.server_provisioning
+# defaults file for server_provisioning
+
+user_name: mohamed
+port: 5192

@@ -1,2 +1,9 @@
 ---
-# vars file for 1.server_provisioning
+# vars file for server_provisioning
+
+# $ ansible-vault encrypt passwd_file
+# >> add vault passwd
+# $  ansible-playbook --ask-vault-pass -i hosts project.yml
+passwd_file_path: /home/mohamed/Documents/devops/ansible_tasks/LEMP/passwd_file
+
+ansible_ssh_pass: "{{ lookup('file', '{{ passwd_file_path }}') }}"

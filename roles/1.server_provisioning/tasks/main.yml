@@ -1,2 +1,56 @@
 ---
-# tasks file for 1.server_provisioning
+# tasks file for server_provisioning
+
+# Remote USer
+    - name: Copy id_rsa.pub from local to remote_root directory
+      ansible.builtin.copy:
+        src: "/home/{{user_name}}/.ssh/id_rsa.pub"
+        dest: "/root/.ssh/authorized_keys"
+
+    - name: create user
+      user:
+        name: "{{ user_name }}"
+        shell: /bin/bash
+        group: sudo
+        create_home: yes
+
+    - name: create ssh directory
+      file:
+        path: /home/{{user_name}}/.ssh
+        state: directory
+
+    - name: Copy id_rsa.pub from local to remote_user directory
+      ansible.builtin.copy:
+        src: "/home/{{user_name}}/.ssh/id_rsa.pub"
+        dest: "/home/{{user_name}}/.ssh/authorized_keys"
+
+    - name: Add users to /etc/sudoers
+      template:
+        src: "sudoers.j2"
+        dest: "/etc/sudoers"
+
+# # SSHD_CONFIG
+
+    - name: change ssh port
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?Port 22"
+        line: "Port {{port}} "
+
+    - name: change PermitRootLogin
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PermitRootLogin"
+        line: "PermitRootLogin no"
+
+    - name: change PubKeyAuthentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PubkeyAuthentication"
+        line: "PubKeyAuthentication yes"
+
+    - name: change PasswordAuthentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PasswordAuthentication"
+        line: "PasswordAuthentication no"
