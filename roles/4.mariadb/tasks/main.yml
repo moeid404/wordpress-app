@@ -1,2 +1,27 @@
 ---
 # tasks file for 4.mariadb
+
+    - name: install mariadb-server
+      apt:
+        name: mariadb-server
+        update_cache: yes
+        state: latest
+        force: yes
+
+    - name: "Install ansible python3 mysql dependency"
+      apt:
+        name: python3-mysqldb
+        state: latest
+
+    - name: create database
+      mysql_db:
+        name: "{{db_name}}"
+        state: present
+
+    - name: Create database user
+      mysql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_passwd }}"
+        priv: '*.*:ALL'
+        state: present
+      no_log: true  #for preventing passwords from being displayed in the Ansible output, logs, or reports. 

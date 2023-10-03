@@ -1,2 +1,9 @@
 ---
 # vars file for 4.mariadb
+
+# $ ansible-vault encrypt db_passwd
+# >> add vault passwd
+# $  ansible-playbook --ask-vault-pass -i hosts project.yml
+db_passwd_file_path: /home/mohamed/Documents/devops/ansible_tasks/LEMP/db_passwd
+
+db_passwd: "{{ lookup('file', '{{ db_passwd_file_path }}') }}"

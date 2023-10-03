@@ -1,2 +1,7 @@
 ---
 # defaults file for 4.mariadb
+
+db_name: wordpress
+db_user: wordpressuser
+db_host: localhost
+ansible_python_interpreter: /usr/bin/python3
