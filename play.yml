@@ -1,0 +1,11 @@
+---
+- hosts: wordpress_server 
+  gather_facts: yes
+  roles:
+    - 1.server_provisioning
+    - 2.nginx
+    - 3.php-fpm
+    - 4.mariadb
+    - 5.wordpress
+    - 6.firewall
+    - 7.SSL
