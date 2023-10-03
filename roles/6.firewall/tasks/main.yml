@@ -1,2 +1,18 @@
 ---
 # tasks file for 6.firewall
+
+    - name: install firewall
+      apt:
+        name: iptables-persistent
+        update_cache: yes
+        force: yes
+        state: latest
+
+    - name: Copy firewall rules to remote_server
+      ansible.builtin.copy:
+        src: "{{path_to_firewall_rules}}"
+        dest: "/home/firewall_rules.sh"
+        mode: +x
+
+    - name: Set firewall rules
+      command: "/home/firewall_rules.sh"
