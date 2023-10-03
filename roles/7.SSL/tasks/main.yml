@@ -1,2 +1,13 @@
 ---
 # tasks file for 7.SSL
+
+- name: Install certbot and its Nginx plugin
+  apt:
+    name:
+      - certbot
+      - python3-certbot-nginx
+    update_cache: yes
+    state: latest
+
+
+#certbot --nginx -d essam.spiru.la
