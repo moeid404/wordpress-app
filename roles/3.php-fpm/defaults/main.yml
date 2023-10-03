@@ -1,2 +1,5 @@
 ---
 # defaults file for 3.php-fpm
+
+# $ php -v >> {{ php_version }}
+php_version: 8.2

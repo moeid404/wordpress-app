@@ -1,2 +1,7 @@
 ---
 # handlers file for 3.php-fpm
+
+- name: restart php-fpm
+  service:
+    name: php{{php_version}}-fpm
+    state: restarted

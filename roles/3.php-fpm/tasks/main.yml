@@ -1,2 +1,35 @@
 ---
 # tasks file for 3.php-fpm
+
+- name: install php-fpm
+  apt:
+    name: ['php-fpm', 'php-mysql']
+    update_cache: yes
+    force: yes
+    state: latest
+
+# $ php -v >> {{ php_version }}
+- name: pm mode
+  lineinfile:
+    path: /etc/php/{{ php_version }}/fpm/pool.d/www.conf
+    regexp: "^pm = dynamic"
+    line: "pm = static"
+
+- name: pm max children
+  lineinfile:
+    path: /etc/php/{{ php_version }}/fpm/pool.d/www.conf
+    regexp: "^pm.max_children"
+    line: "pm.max_children = 2"
+
+- name: pm status path
+  lineinfile:
+    path: /etc/php/{{ php_version }}/fpm/pool.d/www.conf
+    regexp: "^;pm.status_path = /status"
+    line: "pm.status_path = /status"
+
+- name: php fastcgi_pass
+  lineinfile:
+    path: /etc/php/{{php_version}}/fpm/pool.d/www.conf
+    regexp: "^;pm.status_listen"
+    line: "pm.status_listen = 127.0.0.1:9001"
+  notify: restart php-fpm
